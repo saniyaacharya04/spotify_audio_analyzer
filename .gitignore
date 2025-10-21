@@ -1,4 +1,6 @@
-# Python
+# ---------------------------
+# Python Artifacts
+# ---------------------------
 __pycache__/
 *.py[cod]
 *.so
@@ -9,25 +11,46 @@ build/
 *.pyc
 *.pyo
 
-# Virtual environment
+# ---------------------------
+# Virtual Environment
+# ---------------------------
 venv/
 ENV/
 env/
 .env
 
-# Streamlit cache and temp
+# ---------------------------
+# Streamlit Cache & Temp
+# ---------------------------
 .cache/
 .streamlit/
 
-# Jupyter Notebook checkpoints
+# ---------------------------
+# Jupyter Notebook Checkpoints
+# ---------------------------
 .ipynb_checkpoints/
 
-# OS files
+# ---------------------------
+# OS Files
+# ---------------------------
 .DS_Store
 Thumbs.db
 
+# ---------------------------
 # Logs
+# ---------------------------
 *.log
 
-# Shell/terminal history
-.history
+# ---------------------------
+# History / Editor Files
+# ---------------------------
+.history/
+*.swp
+*.swo
+*.bak
+
+# ---------------------------
+# Other temporary / system files
+# ---------------------------
+*.tmp
+*.temp
