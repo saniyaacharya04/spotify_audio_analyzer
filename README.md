@@ -1,6 +1,3 @@
-Perfect! Here’s an **updated README** with a concise **Quick Demo section** that clearly shows how to run the app and what outputs to expect—without using any screenshots:
-
----
 
 # Spotify Audio Feature Analyzer
 
@@ -217,7 +214,3 @@ requests==2.32.5
 This project is **MIT License** — free to use and modify for personal projects or portfolios.
 
 ---
-
-If you want, I can also **add a “Tips & Tricks” section** with suggestions for customizing the dashboard and improving cluster analysis, which will make it look ultra-professional for your portfolio.
-
-Do you want me to add that next?
