@@ -1,8 +1,9 @@
 # app.py
+import os
+from dotenv import load_dotenv       # ✅ load environment variables
 import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import config
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
@@ -10,14 +11,26 @@ import plotly.graph_objects as go
 from sklearn.cluster import KMeans
 
 # ---------------------------
-# Spotify Authentication
+# Load Spotify credentials from .env
 # ---------------------------
+load_dotenv()
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
+    st.error("Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in your environment variables (.env file).")
+    st.stop()
+
+# Spotify authentication
 auth_manager = SpotifyClientCredentials(
-    client_id=config.SPOTIFY_CLIENT_ID,
-    client_secret=config.SPOTIFY_CLIENT_SECRET
+    client_id=SPOTIFY_CLIENT_ID,
+    client_secret=SPOTIFY_CLIENT_SECRET
 )
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+# ---------------------------
+# Streamlit page config
+# ---------------------------
 st.set_page_config(page_title="Spotify Audio Feature Analyzer", layout="wide")
 st.title("Spotify Audio Feature Analyzer")
 
@@ -89,6 +102,8 @@ if playlist_input:
     audio_features = sp.audio_features(track_ids)
     data = pd.DataFrame(audio_features)
     data['name'] = track_names
+
+    # Keep all common Spotify audio features
     columns_to_keep = ['name'] + [f for f in audio_features_options if f in data.columns]
     data = data[columns_to_keep]
 

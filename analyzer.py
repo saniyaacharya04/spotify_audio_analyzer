@@ -1,18 +1,28 @@
 # analyzer.py
+import os
+from dotenv import load_dotenv        # ✅ import load_dotenv
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import config
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 from sklearn.cluster import KMeans
 
+# Load environment variables from .env
+load_dotenv()   # ✅ now this works
+
 # ---------------------------
-# Spotify Authentication
+# Spotify Authentication using environment variables
 # ---------------------------
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
+    raise ValueError("Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET as environment variables.")
+
 auth_manager = SpotifyClientCredentials(
-    client_id=config.SPOTIFY_CLIENT_ID,
-    client_secret=config.SPOTIFY_CLIENT_SECRET
+    client_id=SPOTIFY_CLIENT_ID,
+    client_secret=SPOTIFY_CLIENT_SECRET
 )
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
@@ -52,7 +62,14 @@ track_names = [track['track']['name'] for track in tracks if track['track'] is n
 audio_features = sp.audio_features(track_ids)
 data = pd.DataFrame(audio_features)
 data['name'] = track_names
-data = data[['name', 'danceability', 'energy', 'tempo', 'valence']]
+
+# Keep all common Spotify audio features
+columns_to_keep = [
+    'name', 'danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness',
+    'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo',
+    'duration_ms', 'time_signature'
+]
+data = data[[col for col in columns_to_keep if col in data.columns]]
 
 print("\nFirst 5 tracks and features:")
 print(data.head())
