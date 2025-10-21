@@ -1,0 +1,3 @@
+# config.py
+SPOTIFY_CLIENT_ID = '603d02e3c8db465984faff88d1fd7b18'
+SPOTIFY_CLIENT_SECRET = 'f999ae368a334bd981fca8ce4d2affea'
