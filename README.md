@@ -1,5 +1,6 @@
 
-# Spotify Audio Feature Analyzer
+# Spotify Audio Feature Analyzer[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 A comprehensive Python application to analyze Spotify playlists using audio features. This project allows you to visualize and cluster songs interactively using **Streamlit**, **Plotly**, **Matplotlib**, and **KMeans clustering** from scikit-learn. It’s designed for music enthusiasts, data analysts, and portfolio projects.
 
