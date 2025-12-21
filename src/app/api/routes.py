@@ -33,3 +33,19 @@ def billing_upgrade():
 @router.post("/billing/webhook")
 def billing_webhook():
     return {"message": "Billing webhook placeholder"}
+
+from src.app.services.auth_service import validate_api_key
+from src.app.core.errors import PremiumFeatureLocked
+
+
+@router.post("/premium/audio-features/{track_id}")
+def premium_audio_features(track_id: str, x_api_key: str = Header(...)):
+    plan = validate_api_key(x_api_key)
+
+    if plan != "premium":
+        raise PremiumFeatureLocked()
+
+    return {
+        "message": "Premium Audio Features placeholder",
+        "note": "Requires user-authorized Spotify OAuth flow (Authorization Code)."
+    }
