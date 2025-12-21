@@ -15,5 +15,3 @@ class PremiumFeatureLocked(HTTPException):
             status_code=status.HTTP_402_PAYMENT_REQUIRED,
             detail="Premium feature. Upgrade required.",
         )
-class PremiumFeatureLocked(Exception):
-    pass
