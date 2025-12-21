@@ -1,7 +1,13 @@
-from src.app.integrations.spotify_client import fetch_audio_features
-from src.app.domain.audio_analysis import analyze_audio_features
-
+from src.app.integrations.spotify_client import fetch_track_metadata
 
 def analyze_track(track_id: str) -> dict:
-    raw_features = fetch_audio_features(track_id)
-    return analyze_audio_features(raw_features)
+    track = fetch_track_metadata(track_id)
+
+    return {
+        "track_name": track["name"],
+        "artist": track["artists"][0]["name"],
+        "album": track["album"]["name"],
+        "popularity": track["popularity"],
+        "duration_ms": track["duration_ms"],
+        "explicit": track["explicit"],
+    }
