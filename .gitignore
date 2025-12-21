@@ -54,3 +54,29 @@ Thumbs.db
 # ---------------------------
 *.tmp
 *.temp
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.env
+.env.*
+venv/
+.venv/
+
+# Conda
+conda-meta/
+
+# Databases
+*.db
+*.sqlite3
+
+# Test cache
+.pytest_cache/
+
+# OS
+.DS_Store

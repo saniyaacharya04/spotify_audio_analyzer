@@ -1,6 +1,6 @@
 # app.py
 import os
-from dotenv import load_dotenv       # ✅ load environment variables
+from dotenv import load_dotenv   
 import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
