@@ -1,18 +1,22 @@
-.PHONY: run test lint docker-build docker-run clean
+.PHONY: install lint test-unit test-e2e test ci clean
 
-run:
-	uvicorn src.main:app --reload
+install:
+	pip install -r requirements.txt
 
-test:
-	rm -f usage.db
-	pytest -v
+lint:
+	python -m compileall src
 
-docker-build:
-	docker build -f docker/Dockerfile -t spotify-audio-analyzer .
+test-unit:
+	pytest tests/unit -v --cov=src --cov-report=term
 
-docker-run:
-	docker run -p 8000:8000 spotify-audio-analyzer
+test-e2e:
+	chmod +x scripts/e2e.sh
+	./scripts/e2e.sh
+
+test: lint test-unit test-e2e
+
+ci: install test
 
 clean:
-	rm -rf __pycache__ .pytest_cache *.db
- 
+	rm -f usage.db
+	pkill -9 -f uvicorn || true
