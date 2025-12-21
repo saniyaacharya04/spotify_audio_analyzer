@@ -3,8 +3,13 @@ from sqlalchemy.orm import Session
 
 from src.app.core.config import settings
 from src.app.core.errors import UsageLimitExceeded
-from src.app.core.db.session import SessionLocal
+from src.app.core.db.session import SessionLocal, engine
 from src.app.core.db.models import ApiUsage
+from src.app.core.db.session import Base
+
+
+# Ensure tables exist for unit tests & non-API callers
+Base.metadata.create_all(bind=engine)
 
 
 def check_and_increment(api_key: str):
