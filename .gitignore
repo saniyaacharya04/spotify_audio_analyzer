@@ -1,64 +1,6 @@
-# ---------------------------
-# Python Artifacts
-# ---------------------------
-__pycache__/
-*.py[cod]
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-*.pyc
-*.pyo
-
-# ---------------------------
-# Virtual Environment
-# ---------------------------
-venv/
-ENV/
-env/
-.env
-
-# ---------------------------
-# Streamlit Cache & Temp
-# ---------------------------
-.cache/
-.streamlit/
-
-# ---------------------------
-# Jupyter Notebook Checkpoints
-# ---------------------------
-.ipynb_checkpoints/
-
-# ---------------------------
-# OS Files
-# ---------------------------
-.DS_Store
-Thumbs.db
-
-# ---------------------------
-# Logs
-# ---------------------------
-*.log
-
-# ---------------------------
-# History / Editor Files
-# ---------------------------
-.history/
-*.swp
-*.swo
-*.bak
-
-# ---------------------------
-# Other temporary / system files
-# ---------------------------
-*.tmp
-*.temp
-venv/
-
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 
@@ -67,16 +9,20 @@ __pycache__/
 .env.*
 venv/
 .venv/
-
-# Conda
 conda-meta/
 
 # Databases
 *.db
 *.sqlite3
 
-# Test cache
+# Testing
 .pytest_cache/
+.coverage
 
-# OS
+# OS / Editor
 .DS_Store
+.vscode/
+.idea/
+
+# Git
+.git/

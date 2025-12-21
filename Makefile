@@ -1,4 +1,4 @@
-.PHONY: run test docker-build docker-run
+.PHONY: run test lint docker-build docker-run clean
 
 run:
 	uvicorn src.main:app --reload
@@ -12,3 +12,7 @@ docker-build:
 
 docker-run:
 	docker run -p 8000:8000 spotify-audio-analyzer
+
+clean:
+	rm -rf __pycache__ .pytest_cache *.db
+ 

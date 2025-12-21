@@ -1,9 +1,10 @@
 from fastapi import HTTPException, status
 
-# Hardcoded valid API keys for demo (SaaS-style)
+# Demo SaaS key registry
 VALID_API_KEYS = {
     "demo-key": "free",
     "premium-key": "premium",
+    "limit-test-key": "free",   # explicitly supported for E2E
 }
 
 def validate_api_key(api_key: str) -> str:
