@@ -1,13 +1,11 @@
-from src.app.core.config import settings
-from src.app.core.errors import UsageLimitExceeded
+from fastapi import APIRouter, Header
+from src.app.services.spotify_service import analyze_track
+from src.app.services.usage_service import check_and_increment
 
-_usage_counter = {}
+router = APIRouter()
 
 
-def check_and_increment(api_key: str):
-    count = _usage_counter.get(api_key, 0)
-
-    if count >= settings.daily_free_limit:
-        raise UsageLimitExceeded()
-
-    _usage_counter[api_key] = count + 1
+@router.get("/analyze/{track_id}")
+def analyze(track_id: str, x_api_key: str = Header(...)):
+    check_and_increment(x_api_key)
+    return analyze_track(track_id)
