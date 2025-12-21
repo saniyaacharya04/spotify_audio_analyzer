@@ -1,3 +1,5 @@
+![CI](https://github.com/saniyaacharya04/spotify_audio_analyzer/actions/workflows/ci.yml/badge.svg)
+
 
 # Spotify Audio Feature Analyzer
 
