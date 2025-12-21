@@ -26,3 +26,4 @@ conda-meta/
 
 # Git
 .git/
+.history/
