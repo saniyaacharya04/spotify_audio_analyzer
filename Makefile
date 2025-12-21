@@ -7,7 +7,7 @@ lint:
 	python -m compileall src
 
 test-unit:
-	pytest tests/unit -v --cov=src --cov-report=term
+	pytest tests/unit -v --cov=src --cov-config=.coveragerc --cov-report=term
 
 test-e2e:
 	chmod +x scripts/e2e.sh
