@@ -1,218 +1,209 @@
-![CI](https://github.com/saniyaacharya04/spotify_audio_analyzer/actions/workflows/ci.yml/badge.svg)
+# Spotify Audio Analyzer
 
+[![CI](https://github.com/saniyaacharya04/spotify_audio_analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/saniyaacharya04/spotify_audio_analyzer/actions)
 
-# Spotify Audio Feature Analyzer
+A **backend-first, SaaS-style Spotify analysis service** built with **FastAPI**, **SQLAlchemy**, and **Spotify Web API**.
+The system demonstrates **real API integration**, **API key authentication**, **usage-based rate limiting**, **premium feature gating**, and **end-to-end CI validation**.
 
-A comprehensive Python application to analyze Spotify playlists using audio features. This project allows you to visualize and cluster songs interactively using **Streamlit**, **Plotly**, **Matplotlib**, and **KMeans clustering** from scikit-learn. It’s designed for music enthusiasts, data analysts, and portfolio projects.
+This project is designed to be **recruiter-reviewable**, **interview-defendable**, and **production-realistic**.
 
 ---
 
-## Features
+## Key Capabilities
 
-1. **Fetch Spotify Playlist Tracks**
+### 1. Real Spotify Data Integration
 
-   * Input either a Spotify Playlist ID or full URL.
-   * Fetches all tracks (supports playlists with 100+ tracks).
+* Uses Spotify **Client Credentials Flow**
+* Fetches real track metadata from Spotify Web API
+* No mock data in production paths
 
-2. **Audio Feature Extraction**
+### 2. SaaS-Style API Authentication
 
-   * Uses the Spotify API to retrieve detailed audio features for each track, including:
+* API-key based access control
+* Free and Premium plans
+* Invalid key handling with proper HTTP semantics
 
-     * Danceability, Energy, Key, Loudness, Mode, Speechiness
-     * Acousticness, Instrumentalness, Liveness, Valence, Tempo
-     * Duration, Time Signature
+### 3. Usage-Based Rate Limiting
 
-3. **Interactive Visualizations**
+* Daily request limits for free users
+* Persistent usage tracking via database
+* Clean error signaling when limits are exceeded
 
-   * **2D Scatter Plots**: Compare any two features.
+### 4. Premium Feature Gating
 
-     * Matplotlib: Static scatter plots with color-coded values.
-     * Plotly: Interactive scatter plots with hover labels.
-   * **3D Clustering**: Visualize KMeans clusters in 3D or 2D depending on features selected.
-   * **Radar Charts**: Compare average feature values across clusters.
+* Premium-only endpoints protected at API layer
+* Audio features endpoint intentionally gated
+* Placeholder clearly documents OAuth Authorization Code requirement
 
-4. **Dynamic Clustering**
+### 5. Clean Architecture
 
-   * Select features for KMeans clustering dynamically.
-   * Choose the number of clusters (2–10).
-   * Highlights which tracks belong to each cluster.
+* Layered structure: API → Services → Integrations → Domain
+* Clear separation of concerns
+* Testable, maintainable modules
 
-5. **Cluster Summary Dashboard**
+### 6. Full CI Discipline
 
-   * Shows average feature values per cluster.
-   * Displays cluster sizes.
-   * Automatically color-coded table for high/low values.
-   * Lists **top songs per cluster**.
-
-6. **Download Data**
-
-   * Export full playlist features and cluster info as CSV.
+* Unit tests with isolated in-memory database
+* End-to-end API tests using real HTTP calls
+* GitHub Actions pipeline with Python version matrix
+* CI badge reflecting repository health
 
 ---
 
 ## Tech Stack
 
-* **Python 3.13**
-* **Spotipy** – Spotify Web API wrapper
-* **Streamlit** – Interactive web dashboard
-* **Pandas** – Data manipulation
-* **Matplotlib & Plotly** – Data visualization
-* **Scikit-learn** – KMeans clustering
+* Python 3.9 – 3.11
+* FastAPI
+* SQLAlchemy
+* SQLite
+* Spotify Web API
+* Pytest
+* GitHub Actions
+* Docker
 
 ---
 
-## Installation
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/saniyaacharya04/spotify_audio_analyzer.git
-cd spotify_audio_analyzer
-```
-
-2. **Create a virtual environment**
-
-```bash
-python -m venv venv
-source venv/bin/activate   # macOS/Linux
-venv\Scripts\activate      # Windows
-```
-
-3. **Install dependencies**
-
-```bash
-pip install -r requirements.txt
-```
-
-4. **Set Spotify API credentials as environment variables**
-
-```bash
-export SPOTIFY_CLIENT_ID="your_client_id"
-export SPOTIFY_CLIENT_SECRET="your_client_secret"
-```
-
-> For Windows PowerShell:
-
-```powershell
-$env:SPOTIFY_CLIENT_ID="your_client_id"
-$env:SPOTIFY_CLIENT_SECRET="your_client_secret"
-```
-
----
-
-## Usage
-
-### Run as a Python Script
-
-```bash
-python analyzer.py
-```
-
-* Enter a **Spotify Playlist ID** or URL when prompted.
-* The script fetches tracks, audio features, and displays static 2D scatter plots, 3D clustering, and cluster info.
-
-### Run as a Streamlit Web App
-
-```bash
-streamlit run app.py
-```
-
-* Open your browser to the local URL shown by Streamlit.
-* Enter playlist ID/URL and use sidebar controls to:
-
-  * Select features for visualization
-  * Set number of clusters
-  * Toggle between Matplotlib and Plotly
-  * Generate radar charts and summary tables
-* Download full audio features CSV using the “Download Data” tab.
-
----
-
-## Quick Demo
-
-1. **Launch the app:**
-
-```bash
-streamlit run app.py
-```
-
-2. **Enter a playlist URL or ID** (example):
-
-```
-https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M
-```
-
-3. **Use sidebar to select:**
-
-   * Number of clusters (K)
-   * X/Y features for 2D plots
-   * Bubble size and color features
-   * Features for clustering and radar charts
-
-4. **Expected outputs:**
-
-   * **2D Scatter Plots:** Tempo vs Energy or any selected features
-   * **3D Clustering:** Interactive 3D or 2D clusters
-   * **Cluster Summary:** Average feature values per cluster with top songs listed
-   * **Radar Chart:** Comparison of selected features across clusters
-   * **CSV Download:** Export all features with cluster info
-
----
-
-## File Structure
+## Project Structure
 
 ```
 spotify_audio_analyzer/
-│
-├─ analyzer.py          # Command-line Python script for playlist analysis
-├─ app.py               # Streamlit web app with interactive dashboard
-├─ requirements.txt     # Python dependencies
-├─ README.md            # Project documentation
-├─ venv/                # Python virtual environment
-└─ __pycache__/         # Cached Python files
+├── src/
+│   ├── app/
+│   │   ├── api/            # FastAPI routes
+│   │   ├── services/       # Business logic
+│   │   ├── integrations/   # Spotify API client
+│   │   ├── core/           # Config, DB, errors
+│   │   └── domain/         # Domain logic
+│   └── main.py             # App entrypoint
+├── tests/
+│   ├── unit/               # Fast unit tests (in-memory DB)
+│   └── e2e/                # API-level integration tests
+├── scripts/
+│   └── e2e.sh              # Full end-to-end test script
+├── docker/
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── .github/workflows/ci.yml
+├── Makefile
+├── requirements.txt
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## Notes
+## API Overview
 
-* Requires **Spotify Developer Account** to get `client_id` and `client_secret`.
-* Designed for playlists of any size, automatically handles pagination.
-* All clustering and plots are dynamic and configurable via sidebar controls in Streamlit.
-* Includes error handling for invalid playlist URLs or empty playlists.
+### Health Check
+
+```
+GET /health
+```
+
+### Track Metadata (Free)
+
+```
+GET /analyze/{track_id}
+Header: X-API-Key
+```
+
+Returns:
+
+* Track name
+* Artist
+* Album
+* Popularity
+* Duration
+* Explicit flag
+
+### Premium Audio Features (Gated)
+
+```
+POST /premium/audio-features/{track_id}
+Header: X-API-Key
+```
+
+* Free users receive `402 Payment Required`
+* Premium users receive a documented placeholder response
+* Designed for OAuth Authorization Code flow extension
 
 ---
 
-## Dependencies
+## Environment Variables
 
-Key dependencies (see `requirements.txt` for full list):
+Create a `.env` file (not committed):
 
-```text
-streamlit==1.50.0
-spotipy==2.25.1
-pandas==2.3.3
-matplotlib==3.10.7
-plotly==6.3.1
-scikit-learn==1.7.2
-python-dotenv==1.1.1
-numpy==2.3.4
-requests==2.32.5
+```
+SPOTIFY_CLIENT_ID=your_client_id
+SPOTIFY_CLIENT_SECRET=your_client_secret
 ```
 
 ---
 
-## Portfolio Highlights
+## Local Development
 
-* Fully interactive dashboard with **dynamic clustering**
-* Feature selection for plots and clustering
-* Radar chart summaries per cluster
-* Downloadable CSV data
-* Professional-looking visualizations for portfolio showcase
+### Setup
+
+```
+conda create -n spotify-audio-analyzer python=3.10
+conda activate spotify-audio-analyzer
+pip install -r requirements.txt
+```
+
+### Run API
+
+```
+uvicorn src.main:app --reload
+```
+
+### Run Unit Tests
+
+```
+pytest tests/unit -v
+```
+
+### Run Full End-to-End Tests
+
+```
+chmod +x scripts/e2e.sh
+./scripts/e2e.sh
+```
+
+---
+
+## CI Pipeline
+
+The GitHub Actions workflow performs:
+
+1. Python syntax validation
+2. Unit tests with in-memory SQLite
+3. End-to-end API tests
+4. Multi-version Python validation (3.9, 3.10, 3.11)
+
+All checks must pass before merge.
+
+---
+
+## Design Decisions (Intentional)
+
+* Audio features endpoint gated to reflect real Spotify OAuth constraints
+* Client Credentials used only where allowed by Spotify policy
+* In-memory DB for unit tests to ensure speed and isolation
+* File-based DB only used in runtime/E2E paths
+* Explicit SaaS-style error handling instead of silent failures
 
 ---
 
 ## License
 
-This project is **MIT License** — free to use and modify for personal projects or portfolios.
+MIT License
 
 ---
+
+## Author
+
+Saniya Acharya
+B.Tech Computer Science Engineering
+Backend / Systems / API Engineering Focus
+
+
