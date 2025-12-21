@@ -2,28 +2,64 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   test:
+    name: Test & Validate
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      ENVIRONMENT: ci
+      LOG_LEVEL: INFO
+      PYTHONUNBUFFERED: 1
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: pip
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      # -----------------------
+      # Static sanity checks
+      # -----------------------
+      - name: Python syntax check
         run: |
-          rm -f usage.db
-          pytest -v
+          python -m compileall src
+
+      # -----------------------
+      # Unit tests (fast)
+      # -----------------------
+      - name: Run unit tests
+        run: |
+          pytest tests/unit -v
+
+      # -----------------------
+      # E2E tests (real API)
+      # -----------------------
+      - name: Run E2E API tests
+        run: |
+          chmod +x scripts/e2e.sh
+          ./scripts/e2e.sh
+
+      # -----------------------
+      # Upload logs if failed
+      # -----------------------
+      - name: Upload E2E logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-logs
+          path: /tmp/spotify_e2e.log
