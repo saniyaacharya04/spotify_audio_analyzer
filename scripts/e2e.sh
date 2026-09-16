@@ -15,7 +15,7 @@ PREMIUM_KEY="premium-key"
 
 # -------- CLEAN PREVIOUS RUN --------
 echo "▶ Killing any running uvicorn"
-pkill -f "uvicorn src.main:app" || true
+pkill -f "PYTHONPATH=. uvicorn src.main:app" || true
 
 echo "▶ Cleaning test database"
 rm -f usage.db
@@ -31,7 +31,7 @@ pip install -r requirements.txt > /dev/null
 
 # -------- START SERVER --------
 echo "▶ Starting API server on port ${APP_PORT}"
-uvicorn src.main:app \
+PYTHONPATH=. uvicorn src.main:app \
   --host ${APP_HOST} \
   --port ${APP_PORT} \
   > /tmp/spotify_e2e.log 2>&1 &
